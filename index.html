@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cold War Strategy Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #ffa500;
+            margin: 20px 0;
+        }
+        #gameContainer {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+        .map {
+            width: 60%;
+            height: 500px;
+            background-color: #4a7b9d;
+            position: relative;
+        }
+        .country {
+            position: absolute;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #controlPanel {
+            width: 30%;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            color: #fff;
+        }
+        #countrySelect {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .status {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 5px;
+        }
+        .btn {
+            display: block;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #5a9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Cold War to Future Era Strategy Game</h1>
+
+<div id="gameContainer">
+    <div class="map" id="map">
+        <div class="country" style="top: 20%; left: 25%;" onclick="selectCountry('USA')">USA</div>
+        <div class="country" style="top: 40%; left: 60%;" onclick="selectCountry('USSR')">USSR</div>
+        <div class="country" style="top: 70%; left: 50%;" onclick="selectCountry('China')">China</div>
+        <div class="country" style="top: 30%; left: 20%;" onclick="selectCountry('UK')">UK</div>
+        <div class="country" style="top: 60%; left: 10%;" onclick="selectCountry('India')">India</div>
+    </div>
+
+    <div id="controlPanel">
+        <h2>Control Panel</h2>
+        <select id="countrySelect" onchange="initializeCountry(this.value)">
+            <option>Select a Country</option>
+            <option value="USA">USA</option>
+            <option value="USSR">USSR</option>
+            <option value="China">China</option>
+            <option value="UK">UK</option>
+            <option value="India">India</option>
+        </select>
+
+        <div class="status">
+            <p><strong>Year:</strong> <span id="year">1950</span></p>
+            <p><strong>Military Power:</strong> <span id="militaryPower">0</span></p>
+            <p><strong>Resources:</strong> <span id="resources">0</span></p>
+            <p><strong>Technology Level:</strong> <span id="techLevel">1</span></p>
+        </div>
+        
+        <button class="btn" onclick="advanceYear()">Advance Year</button>
+        <button class="btn" onclick="increaseMilitary()">Increase Military</button>
+        <button class="btn" onclick="researchTechnology()">Research Technology</button>
+    </div>
+</div>
+
+<script>
+    // Game state
+    let year = 1950;
+    let militaryPower = 100;
+    let resources = 1000;
+    let techLevel = 1;
+    let selectedCountry = '';
+
+    // Select a country to initialize stats
+    function selectCountry(country) {
+        selectedCountry = country;
+        document.getElementById("countrySelect").value = country;
+        initializeCountry(country);
+    }
+
+    function initializeCountry(country) {
+        if (country === "USA") {
+            militaryPower = 500;
+            resources = 1500;
+            techLevel = 2;
+        } else if (country === "USSR") {
+            militaryPower = 450;
+            resources = 1300;
+            techLevel = 2;
+        } else if (country === "China") {
+            militaryPower = 200;
+            resources = 800;
+            techLevel = 1;
+        } else if (country === "UK") {
+            militaryPower = 300;
+            resources = 1000;
+            techLevel = 1;
+        } else if (country === "India") {
+            militaryPower = 150;
+            resources = 500;
+            techLevel = 1;
+        }
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        document.getElementById("year").innerText = year;
+        document.getElementById("militaryPower").innerText = militaryPower;
+        document.getElementById("resources").innerText = resources;
+        document.getElementById("techLevel").innerText = techLevel;
+    }
+
+    // Advance the game year
+    function advanceYear() {
+        year += 1;
+        resources += 100; // Increment resources each year
+        updateDisplay();
+    }
+
+    // Increase military power, costing resources
+    function increaseMilitary() {
+        if (resources >= 100) {
+            militaryPower += 50;
+            resources -= 100;
+            updateDisplay();
+        } else {
+            alert("Not enough resources to increase military!");
+        }
+    }
+
+    // Research to increase technology level
+    function researchTechnology() {
+        if (resources >= 200) {
+            techLevel += 1;
+            resources -= 200;
+            updateDisplay();
+        } else {
+            alert("Not enough resources to research technology!");
+        }
+    }
+</script>
+
+</body>
+</html>
